@@ -1,0 +1,281 @@
+---
+title: 'R Portfolio Analysis Practice '
+author: R package build
+date: '2021-10-02'
+slug: r-portfolio-analysis-practice
+categories: []
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="portfolio-analysis" class="section level2">
+<h2>Portfolio Analysis</h2>
+<p>Diversify investment -&gt; porfolio -&gt; increase return’s expectation and reduce the risk. Hence, we need to test our investment strategy, it is called: back testing. Back testing are tested using historical data. We also need to use an online performance monitoring.</p>
+</div>
+<div id="import-data" class="section level2">
+<h2>Import Data</h2>
+<pre class="r"><code>library(tidyquant)</code></pre>
+<pre><code>## Loading required package: lubridate</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre><code>## Loading required package: PerformanceAnalytics</code></pre>
+<pre><code>## Loading required package: xts</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre><code>## 
+## Attaching package: &#39;PerformanceAnalytics&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     legend</code></pre>
+<pre><code>## Loading required package: quantmod</code></pre>
+<pre><code>## Loading required package: TTR</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
+##   method            from
+##   as.zoo.data.frame zoo</code></pre>
+<pre><code>## ══ Need to Learn tidyquant? ════════════════════════════════════════════════════
+## Business Science offers a 1-hour course - Learning Lab #9: Performance Analysis &amp; Portfolio Optimization with tidyquant!
+## &lt;/&gt; Learn more at: https://university.business-science.io/p/learning-labs-pro &lt;/&gt;</code></pre>
+<pre class="r"><code>ko &lt;- getSymbols(&quot;ko&quot;, from = &quot;2003-01-01&quot;, to = &quot;2016-08-30&quot;, auto.assign = FALSE)</code></pre>
+<pre><code>## &#39;getSymbols&#39; currently uses auto.assign=TRUE by default, but will
+## use auto.assign=FALSE in 0.5-0. You will still be able to use
+## &#39;loadSymbols&#39; to automatically load data. getOption(&quot;getSymbols.env&quot;)
+## and getOption(&quot;getSymbols.auto.assign&quot;) will still be checked for
+## alternate defaults.
+## 
+## This message is shown once per session and may be disabled by setting 
+## options(&quot;getSymbols.warning4.0&quot;=FALSE). See ?getSymbols for details.</code></pre>
+<pre class="r"><code>pep &lt;- getSymbols(&quot;pep&quot;, from = &quot;2003-01-01&quot;, to = &quot;2016-08-30&quot;, auto.assign = FALSE)
+head(cbind(ko, pep))</code></pre>
+<pre><code>##            KO.Open KO.High KO.Low KO.Close KO.Volume KO.Adjusted PEP.Open
+## 2003-01-02  22.075  22.495 22.025   22.425   9358800    12.94786    42.12
+## 2003-01-03  22.430  22.460 22.110   22.370   6184400    12.91611    43.29
+## 2003-01-06  22.300  22.575 22.170   22.460   7796000    12.96807    43.25
+## 2003-01-07  22.250  22.375 22.100   22.180   7628000    12.80640    42.70
+## 2003-01-08  22.300  22.375 21.950   22.035   6403600    12.72268    42.46
+## 2003-01-09  21.950  22.340 21.850   22.265   9030200    12.85548    42.95
+##            PEP.High PEP.Low PEP.Close PEP.Volume PEP.Adjusted
+## 2003-01-02    43.20   42.12     43.10    3522600     26.34956
+## 2003-01-03    43.49   42.78     43.40    3153400     26.53297
+## 2003-01-06    43.68   42.79     42.96    4139400     26.26397
+## 2003-01-07    42.81   42.00     42.18    4796800     25.78712
+## 2003-01-08    42.96   42.40     42.70    4514600     26.10503
+## 2003-01-09    43.29   42.50     43.14    3762800     26.37403</code></pre>
+</div>
+<div id="portfolio-analysis-1" class="section level2">
+<h2>Portfolio Analysis</h2>
+<p>Diversify investment -&gt; porfolio -&gt; increase return’s expectation and reduce the risk. Hence, we need to test our investment strategy, it is called: backtesting. Backtesting are tested using historical data. We also need to use an online performance monitoring.</p>
+</div>
+<div id="import-data-1" class="section level2">
+<h2>Import Data</h2>
+<pre class="r"><code>library(tidyquant)
+ko &lt;- getSymbols(&quot;ko&quot;, from = &quot;2003-01-01&quot;, to = &quot;2016-08-30&quot;, auto.assign = FALSE)
+pep &lt;- getSymbols(&quot;pep&quot;, from = &quot;2003-01-01&quot;, to = &quot;2016-08-30&quot;, auto.assign = FALSE)
+head(cbind(ko, pep))</code></pre>
+<pre><code>##            KO.Open KO.High KO.Low KO.Close KO.Volume KO.Adjusted PEP.Open
+## 2003-01-02  22.075  22.495 22.025   22.425   9358800    12.94786    42.12
+## 2003-01-03  22.430  22.460 22.110   22.370   6184400    12.91610    43.29
+## 2003-01-06  22.300  22.575 22.170   22.460   7796000    12.96807    43.25
+## 2003-01-07  22.250  22.375 22.100   22.180   7628000    12.80640    42.70
+## 2003-01-08  22.300  22.375 21.950   22.035   6403600    12.72268    42.46
+## 2003-01-09  21.950  22.340 21.850   22.265   9030200    12.85548    42.95
+##            PEP.High PEP.Low PEP.Close PEP.Volume PEP.Adjusted
+## 2003-01-02    43.20   42.12     43.10    3522600     26.34957
+## 2003-01-03    43.49   42.78     43.40    3153400     26.53297
+## 2003-01-06    43.68   42.79     42.96    4139400     26.26398
+## 2003-01-07    42.81   42.00     42.18    4796800     25.78712
+## 2003-01-08    42.96   42.40     42.70    4514600     26.10503
+## 2003-01-09    43.29   42.50     43.14    3762800     26.37402</code></pre>
+</div>
+<div id="data-manipulation" class="section level2">
+<h2>Data Manipulation</h2>
+<p>First, we define ko_pep as the ratio expressing the value of the share price of the Coca Cola company in terms of the share price of PepsiCo.</p>
+<pre class="r"><code>ko &lt;- Ad(ko)
+pep &lt;- Ad(pep)
+head(cbind(ko, pep))</code></pre>
+<pre><code>##            KO.Adjusted PEP.Adjusted
+## 2003-01-02    12.94786     26.34957
+## 2003-01-03    12.91610     26.53297
+## 2003-01-06    12.96807     26.26398
+## 2003-01-07    12.80640     25.78712
+## 2003-01-08    12.72268     26.10503
+## 2003-01-09    12.85548     26.37402</code></pre>
+<pre class="r"><code>ko_pep &lt;- ko/pep
+head(ko_pep)</code></pre>
+<pre><code>##            KO.Adjusted
+## 2003-01-02   0.4913880
+## 2003-01-03   0.4867945
+## 2003-01-06   0.4937587
+## 2003-01-07   0.4966202
+## 2003-01-08   0.4873652
+## 2003-01-09   0.4874295</code></pre>
+</div>
+<div id="get-a-feel-for-the-data" class="section level2">
+<h2>Get a feel for the data</h2>
+<p>The choice of investment matters even when the underlying risky assets are similar. As a first example, let us consider the stock price of the Coca Cola Company and the PepsiCo company from January 2003 until the end of August 2016.</p>
+<p>The time series plot shows you the value evolution of one dollar invested in each company. As an exercise, plot the time series showing the relative value of an investment in the Coca Cola company, compared to the value of an investment in PepsiCo. To do this exercise, you can use the corresponding price series, available as the variables ko and pep in your workspace.</p>
+<p>Three important packages that you will use in this module are the xts and zoo packages and the PerformanceAnalytics package.</p>
+<p>Instructions
+1. Define ko_pep as the ratio expressing the value of the share price of the Coca Cola company in terms of the share price of PepsiCo.
+2. Use plot.zoo() to visualize the variation in this ratio over time. Note that when the value of the ratio is larger than 1, the performance of ko since January 2003 is higher than that of pep.
+3. As a reference line, use abline() to include a horizontal line at h=0.5. Note that where the value of the ratio is larger than one, the Coca Cola Company outperforms Pepsico and vice versa.</p>
+<pre class="r"><code># Define ko_pep 
+# ko_pep &lt;- 
+
+# Make a time series plot of ko_pep
+  plot.zoo(ko_pep)
+# Add as a reference, a horizontal line at 0.5
+  graphics::abline(h=0.5)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="calculating-portfolio-weights-when-component-values-are-given" class="section level2">
+<h2>Calculating portfolio weights when component values are given</h2>
+<p>In the video, it was shown that you can easily compute portfolio weights if you have a given amount of money invested in certain assets. If you want to start investing in a portfolio, but you have budget restraints, you can also impose weights yourself. Depending on what these are, you will invest a certain amount of money in each of the assets based on their weight.</p>
+<p>When given asset values, calculating the weights is quite simple. Recall from the video that weights are calculated by taking the value of an asset divided by the sum of values from all assets.</p>
+<p>In this exercise, you will learn to calculate weights when individual asset values are given! For this example, an investor has 4000 USD invested in equities, 4000 USD invested in bonds, and 2000 USD invested in commodities. Compute the weights as the proportion invested in each of those three assets.
+Instructions</p>
+<ol style="list-style-type: decimal">
+<li>Define the vector values as the vector holding the three asset values.</li>
+<li>Define the vectors weights as the vector values divided by the total value (obtained by summing over the component values using the function sum().</li>
+<li>Print weights.</li>
+</ol>
+<pre class="r"><code># Define the vector values
+values &lt;- c(4000,4000,2000)
+
+# Define the vector weights
+weights &lt;- values/sum(values)
+
+# Print the resulting weights
+print(weights)</code></pre>
+<pre><code>## [1] 0.4 0.4 0.2</code></pre>
+</div>
+<div id="the-weights-of-a-market-capitalization-weighted-portfolio" class="section level2">
+<h2>The weights of a market capitalization-weighted portfolio</h2>
+<p>In a market capitalization-weighted portfolio, the weights are given by the individual assets’ market capitalization (or market value), divided by the sum of the market capitalizations of all assets. A typical example is the S&amp;P 500 portfolio invested in the 500 largest companies listed on the US stock exchanges (NYSE, Nasdaq). Note that by dividing by the sum of asset values across all portfolio assets, the portfolio weights sum to unity (one).</p>
+<p>As an exercise, inspect the distribution of market capitalization based weights when the portfolio is invested in 10 stocks. For this exercise, you can use market capitalizations of 5, 8, 9, 20, 25, 100, 100, 500, 700, and 2000 million USD.
+Instructions</p>
+<ol style="list-style-type: decimal">
+<li>Define the vector marketcaps holding the market capitalizations.</li>
+<li>Calculate the weights of marketcaps and assign them to weights.</li>
+<li>Print a summary of weights.</li>
+<li>Create a bar plot of weights.</li>
+</ol>
+<pre class="r"><code># Define marketcaps
+ mkt.cap &lt;- c(5,8,9,20,25,100,100,500,700,2000)
+sum(mkt.cap)</code></pre>
+<pre><code>## [1] 3467</code></pre>
+<pre class="r"><code># Compute the weights
+weights &lt;- mkt.cap/sum(mkt.cap)
+
+# Inspect summary statistics
+summary(weights)</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.001442 0.003389 0.018027 0.100000 0.115374 0.576868</code></pre>
+<pre class="r"><code># Create a bar plot of weights
+barplot(weights)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="calculation-of-portfolio-returns" class="section level2">
+<h2>Calculation of portfolio returns</h2>
+<p>For your first exercise on calculating portfolio returns, you will verify that a portfolio return can be computed as the weighted average of the portfolio component returns. In other words, this means that a portfolio return is calculated by taking the sum of simple returns multiplied by the portfolio weights. Remember that simple returns are calculated as the final value minus the initial value, divided by the initial value.</p>
+<p>Assume that you invested in three assets. Their initial values are 1000 USD, 5000 USD, 2000 USD, respectively. Over time, the values change to 1100 USD, 4500 USD, and 3000 USD.</p>
+<p>Instructions</p>
+<ol style="list-style-type: decimal">
+<li>Create a vector of the initial asset values in_values.</li>
+<li>Create a vector of the final values, fin_values.</li>
+<li>Create a vector of the initial weights, weights.</li>
+<li>Use the simple return definition to compute the vector of returns on the three component assets. Assign return values to returns.</li>
+<li>Assign the portfolio returns to preturns.</li>
+</ol>
+<pre class="r"><code># Vector of initial value of the assets
+in_values &lt;- c(1000,5000,2000)
+  
+# Vector of final values of the assets
+fin_values &lt;- c(1100,4500,3000)
+
+# Weights as the proportion of total value invested in each asset
+weights &lt;- in_values/sum(in_values)
+
+# Vector of simple returns of the assets 
+returns &lt;- (fin_values - in_values)/in_values
+  
+# Compute portfolio return using the portfolio return formula
+preturns &lt;- sum(returns*weights)</code></pre>
+</div>
+<div id="from-simple-to-gross-and-multi-period-returns" class="section level2">
+<h2>From simple to gross and multi-period returns</h2>
+<p>The simple return R expresses the percentage change in the value of an investment. The corresponding so-called “gross” return is defined as the future value of 1 USD invested in the asset for one period and is thus equal to 1 + R.</p>
+<p>The gross return over two periods is obtained similarly. Let <span class="math inline">\(R1\)</span> be the return in the first period and <span class="math inline">\(R2\)</span> the return in the second period. Then the end-value of a 1 USD investment is (1 + <span class="math inline">\(R1\)</span>)*(1 + <span class="math inline">\(R2\)</span>).</p>
+<p>The corresponding simple return over those two periods is:
+(1 + <span class="math inline">\(R1\)</span>)*(1 + <span class="math inline">\(R2\)</span>) - 1.</p>
+<p>Suppose that you have an investment horizon of two periods. In the first period, you make a 10% return. But in the second period, you take a loss of 5%.</p>
+<p>Compute the end value of a 1000 USD investment.</p>
+<pre class="r"><code>(1 + 0.1) * (1 - 0.05)</code></pre>
+<pre><code>## [1] 1.045</code></pre>
+</div>
+<div id="the-asymmetric-impact-of-gains-and-losses" class="section level2">
+<h2>The asymmetric impact of gains and losses</h2>
+<p>It is important to be aware of the fact that a positive and negative return of the same relative magnitude do not compensate each other in terms of terminal wealth. Mathematically, this can be seen from the identity <span class="math inline">\((1 + x) * (1 - x) = 1 - x^2\)</span>, which is less than one. A 50% loss is thus not compensated by a 50% gain. After a loss of 50%, what is the return needed to be at par again? Verify your answer in the R console.</p>
+<pre class="r"><code>(1 - 0.5) * (1 + 1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="buy-and-hold-versus-daily-rebalancing" class="section level2">
+<h2>Buy-and-hold versus (daily) rebalancing</h2>
+<p>The choice of investment matters, even when the underlying risky assets are similar. As an example, you will now consider the stock price of Apple and Microsoft from January 2006 until the end of August 2016. The time series plot shows you the value evolution of one dollar invested in each of them.</p>
+<p>For this exercise, your portfolio approach will be to invest half of your budget in Apple stock, and the other half of your budget in Microsoft stock. Over time, the portfolio weights will change. You will have two choices as an investor. The first choice is to be passive and not trade any further. This is called a buy and hold strategy. The second choice is to buy and trade at the close of each day that results in a rebalance of the portfolio such that your portfolio is equally invested in shares of Microsoft and Apple. This is a rebalanced portfolio.</p>
+<p>Which of the following statements is false?</p>
+<ol style="list-style-type: decimal">
+<li>By investing in a portfolio of risky assets, the portfolio payoff will be in between the minimum and maximum of the payoff of the underlying risky assets.</li>
+<li>By investing in a portfolio of risky assets, the risk of the portfolio payoff will be less than the maximum risk of the underlying risky assets.</li>
+<li>An investor needs to have a lot of capital to be able to invest in a portfolio of many assets.</li>
+<li>Because the prices of Microsoft and Apple have evolved differently, the investor who spent initially half of his wealth on Microsoft and Apple ends up with a portfolio that is no longer equally invested.</li>
+</ol>
+</div>
+<div id="the-time-series-of-asset-returns" class="section level2">
+<h2>The time series of asset returns</h2>
+<p>Calculating the returns for one period is pretty straightforward to do in R. When the returns need to be calculated for different dates the functions Return.calculate() and Return.portfolio(), in the R package PerformanceAnalytics are extremely helpful. They require the input data to be of the xts-time series class, which is pre-loaded. You will explore the functionality of the PerformanceAnalytics package in this exercise.</p>
+<ol style="list-style-type: decimal">
+<li>Load the package PerformanceAnalytics in your R session.</li>
+<li>Have a look at the first and last six rows of prices, using head() and tail() respectively.</li>
+<li>Use the function Return.calculate() with the only argument prices to compute for each date the return as the percentage change in the price compared to the previous date, call this returns.</li>
+<li>Print the first six rows of returns.</li>
+<li>Remove the first row of returns.</li>
+</ol>
+<pre class="r"><code># Load package PerformanceAnalytics 
+library(PerformanceAnalytics)
+
+# Print the first six rows and last six rows of prices
+AAPL &lt;- getSymbols(&quot;AAPL&quot;, from =&quot;2006-01-01&quot;, to=&quot;2015-08-31&quot;, auto.assign = FALSE)[,6]
+MSFT &lt;- getSymbols(&quot;MSFT&quot;, from =&quot;2006-01-01&quot;, to=&quot;2015-08-31&quot;, auto.assign = FALSE)[,6]
+prices &lt;- head(cbind(AAPL,MSFT))
+
+# Create the variable returns using Return.calculate()  
+returns &lt;-  Return.calculate(prices)
+
+# Print the first six rows of returns. Note that the first observation is NA because there is no prior price.
+head(returns)</code></pre>
+<pre><code>##            AAPL.Adjusted MSFT.Adjusted
+## 2006-01-03            NA            NA
+## 2006-01-04   0.002943025  0.0048437733
+## 2006-01-05  -0.007869262  0.0007417578
+## 2006-01-06   0.025812700 -0.0029647294
+## 2006-01-09  -0.003276448 -0.0018575778
+## 2006-01-10   0.063247863  0.0052122796</code></pre>
+<pre class="r"><code># Remove the first row
+returns &lt;- returns[-1,]
+head(returns)</code></pre>
+<pre><code>##            AAPL.Adjusted MSFT.Adjusted
+## 2006-01-04   0.002943025  0.0048437733
+## 2006-01-05  -0.007869262  0.0007417578
+## 2006-01-06   0.025812700 -0.0029647294
+## 2006-01-09  -0.003276448 -0.0018575778
+## 2006-01-10   0.063247863  0.0052122796</code></pre>
+</div>
