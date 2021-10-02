@@ -8,6 +8,16 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 02 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>R Portfolio Analysis Practice </title>
+      <link>/2021/10/02/r-portfolio-analysis-practice/</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/10/02/r-portfolio-analysis-practice/</guid>
+      <description>Portfolio Analysis Diversify investment -&amp;gt; porfolio -&amp;gt; increase return’s expectation and reduce the risk. Hence, we need to test our investment strategy, it is called: back testing. Back testing are tested using historical data. We also need to use an online performance monitoring.
+ Import Data library(tidyquant) ## Loading required package: lubridate ## ## Attaching package: &amp;#39;lubridate&amp;#39; ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## date, intersect, setdiff, union ## Loading required package: PerformanceAnalytics ## Loading required package: xts ## Loading required package: zoo ## ## Attaching package: &amp;#39;zoo&amp;#39; ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## as.</description>
+    </item>
+    
+    <item>
       <title>R practice</title>
       <link>/2021/10/02/r-practice/</link>
       <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate>

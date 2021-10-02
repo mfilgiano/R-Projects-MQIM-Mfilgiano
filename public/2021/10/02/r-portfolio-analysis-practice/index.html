@@ -1,13 +1,79 @@
----
-title: 'R Portfolio Analysis Practice '
-author: R package build
-date: '2021-10-02'
-slug: r-portfolio-analysis-practice
-categories: []
-tags: []
----
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.88.1" />
 
-<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+<title>R Portfolio Analysis Practice  - A Hugo website</title>
+<meta property="og:title" content="R Portfolio Analysis Practice  - A Hugo website">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">11 min read</span>
+    
+
+    <h1 class="article-title">R Portfolio Analysis Practice </h1>
+
+    
+    <span class="article-date">2021-10-02</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/10/02/r-portfolio-analysis-practice/index_files/header-attrs/header-attrs.js"></script>
 
 
 <div id="portfolio-analysis" class="section level2">
@@ -64,11 +130,11 @@ head(cbind(ko, pep))</code></pre>
 ## 2003-01-09  21.950  22.340 21.850   22.265   9030200    12.85548    42.95
 ##            PEP.High PEP.Low PEP.Close PEP.Volume PEP.Adjusted
 ## 2003-01-02    43.20   42.12     43.10    3522600     26.34956
-## 2003-01-03    43.49   42.78     43.40    3153400     26.53298
-## 2003-01-06    43.68   42.79     42.96    4139400     26.26398
-## 2003-01-07    42.81   42.00     42.18    4796800     25.78713
-## 2003-01-08    42.96   42.40     42.70    4514600     26.10502
-## 2003-01-09    43.29   42.50     43.14    3762800     26.37401</code></pre>
+## 2003-01-03    43.49   42.78     43.40    3153400     26.53297
+## 2003-01-06    43.68   42.79     42.96    4139400     26.26397
+## 2003-01-07    42.81   42.00     42.18    4796800     25.78712
+## 2003-01-08    42.96   42.40     42.70    4514600     26.10503
+## 2003-01-09    43.29   42.50     43.14    3762800     26.37403</code></pre>
 </div>
 <div id="portfolio-analysis-1" class="section level2">
 <h2>Portfolio Analysis</h2>
@@ -88,10 +154,10 @@ head(cbind(ko, pep))</code></pre>
 ## 2003-01-08  22.300  22.375 21.950   22.035   6403600    12.72268    42.46
 ## 2003-01-09  21.950  22.340 21.850   22.265   9030200    12.85548    42.95
 ##            PEP.High PEP.Low PEP.Close PEP.Volume PEP.Adjusted
-## 2003-01-02    43.20   42.12     43.10    3522600     26.34956
+## 2003-01-02    43.20   42.12     43.10    3522600     26.34957
 ## 2003-01-03    43.49   42.78     43.40    3153400     26.53297
-## 2003-01-06    43.68   42.79     42.96    4139400     26.26399
-## 2003-01-07    42.81   42.00     42.18    4796800     25.78711
+## 2003-01-06    43.68   42.79     42.96    4139400     26.26398
+## 2003-01-07    42.81   42.00     42.18    4796800     25.78712
 ## 2003-01-08    42.96   42.40     42.70    4514600     26.10503
 ## 2003-01-09    43.29   42.50     43.14    3762800     26.37402</code></pre>
 </div>
@@ -102,21 +168,21 @@ head(cbind(ko, pep))</code></pre>
 pep &lt;- Ad(pep)
 head(cbind(ko, pep))</code></pre>
 <pre><code>##            KO.Adjusted PEP.Adjusted
-## 2003-01-02    12.94786     26.34956
+## 2003-01-02    12.94786     26.34957
 ## 2003-01-03    12.91610     26.53297
-## 2003-01-06    12.96807     26.26399
-## 2003-01-07    12.80640     25.78711
+## 2003-01-06    12.96807     26.26398
+## 2003-01-07    12.80640     25.78712
 ## 2003-01-08    12.72268     26.10503
 ## 2003-01-09    12.85548     26.37402</code></pre>
 <pre class="r"><code>ko_pep &lt;- ko/pep
 head(ko_pep)</code></pre>
 <pre><code>##            KO.Adjusted
-## 2003-01-02   0.4913881
-## 2003-01-03   0.4867944
-## 2003-01-06   0.4937586
-## 2003-01-07   0.4966204
-## 2003-01-08   0.4873650
-## 2003-01-09   0.4874296</code></pre>
+## 2003-01-02   0.4913880
+## 2003-01-03   0.4867945
+## 2003-01-06   0.4937587
+## 2003-01-07   0.4966202
+## 2003-01-08   0.4873652
+## 2003-01-09   0.4874295</code></pre>
 </div>
 <div id="get-a-feel-for-the-data" class="section level2">
 <h2>Get a feel for the data</h2>
@@ -134,7 +200,7 @@ head(ko_pep)</code></pre>
   plot.zoo(ko_pep)
 # Add as a reference, a horizontal line at 0.5
   graphics::abline(h=0.5)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/2021/10/02/r-portfolio-analysis-practice/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="calculating-portfolio-weights-when-component-values-are-given" class="section level2">
 <h2>Calculating portfolio weights when component values are given</h2>
@@ -181,7 +247,7 @@ summary(weights)</code></pre>
 ## 0.001442 0.003389 0.018027 0.100000 0.115374 0.576868</code></pre>
 <pre class="r"><code># Create a bar plot of weights
 barplot(weights)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/2021/10/02/r-portfolio-analysis-practice/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="calculation-of-portfolio-returns" class="section level2">
 <h2>Calculation of portfolio returns</h2>
@@ -264,18 +330,62 @@ returns &lt;-  Return.calculate(prices)
 head(returns)</code></pre>
 <pre><code>##            AAPL.Adjusted MSFT.Adjusted
 ## 2006-01-03            NA            NA
-## 2006-01-04   0.002942588  0.0048435153
-## 2006-01-05  -0.007869262  0.0007413985
-## 2006-01-06   0.025813138 -0.0029637049
-## 2006-01-09  -0.003276874 -0.0018582977
-## 2006-01-10   0.063248291  0.0052123844</code></pre>
+## 2006-01-04   0.002943025  0.0048437733
+## 2006-01-05  -0.007869262  0.0007417578
+## 2006-01-06   0.025812700 -0.0029647294
+## 2006-01-09  -0.003276448 -0.0018575778
+## 2006-01-10   0.063247863  0.0052122796</code></pre>
 <pre class="r"><code># Remove the first row
 returns &lt;- returns[-1,]
 head(returns)</code></pre>
 <pre><code>##            AAPL.Adjusted MSFT.Adjusted
-## 2006-01-04   0.002942588  0.0048435153
-## 2006-01-05  -0.007869262  0.0007413985
-## 2006-01-06   0.025813138 -0.0029637049
-## 2006-01-09  -0.003276874 -0.0018582977
-## 2006-01-10   0.063248291  0.0052123844</code></pre>
+## 2006-01-04   0.002943025  0.0048437733
+## 2006-01-05  -0.007869262  0.0007417578
+## 2006-01-06   0.025812700 -0.0029647294
+## 2006-01-09  -0.003276448 -0.0018575778
+## 2006-01-10   0.063247863  0.0052122796</code></pre>
 </div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
